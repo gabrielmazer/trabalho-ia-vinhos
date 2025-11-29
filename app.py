@@ -26,7 +26,12 @@ def load_data():
     wine = load_wine()
     df = pd.DataFrame(wine.data, columns=wine.feature_names)
     df['target'] = wine.target
-    return df, wine.target_names
+    
+    # TRUQUE DE MESTRE: Trocando nomes feios por nomes reais
+    # Class 0 = Barolo, Class 1 = Grignolino, Class 2 = Barbera
+    nomes_reais = ['Barolo', 'Grignolino', 'Barbera']
+    
+    return df, nomes_reais
 
 df, target_names = load_data()
 
@@ -85,7 +90,11 @@ with col1:
     st.subheader("📊 Visualização dos Dados")
     # Gráfico de dispersão simples
     fig, ax = plt.subplots()
-    sns.scatterplot(data=df, x='alcohol', y='color_intensity', hue='target', palette='viridis', ax=ax)
+    # Mapeando os números para os nomes no gráfico também
+    df_vis = df.copy()
+    df_vis['Tipo de Vinho'] = df_vis['target'].map({0: 'Barolo', 1: 'Grignolino', 2: 'Barbera'})
+    
+    sns.scatterplot(data=df_vis, x='alcohol', y='color_intensity', hue='Tipo de Vinho', palette='viridis', ax=ax)
     plt.title("Relação: Álcool vs Intensidade da Cor")
     st.pyplot(fig)
     
@@ -100,14 +109,17 @@ with col2:
     st.subheader("🔍 Resultado da Predição")
     st.markdown("Com base nos valores do menu lateral:")
     
-    # Resultado formatado
-    vinho_tipo = target_names[prediction[0]]
-    st.success(f"Classificação: **{vinho_tipo.upper()}**")
+    # Resultado formatado com nomes reais
+    nome_vinho = target_names[prediction[0]]
+    
+    st.success(f"Classificação: **{nome_vinho}**")
     
     st.write("Probabilidade de cada classe:")
-    st.bar_chart(prediction_proba[0])
+    # Criando um dataframe para o gráfico de barras ficar com os nomes certos
+    prob_df = pd.DataFrame(prediction_proba, columns=target_names)
+    st.bar_chart(prob_df.T)
     
-    st.warning("Nota: O modelo usa Random Forest, uma técnica que cria múltiplas árvores de decisão para garantir precisão.")
+    st.warning("Nota: O modelo usa Random Forest para identificar padrões químicos complexos.")
 
 # Rodapé obrigatório
 st.markdown("---")
