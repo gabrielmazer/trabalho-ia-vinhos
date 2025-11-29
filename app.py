@@ -90,12 +90,22 @@ with col1:
     st.subheader("📊 Visualização dos Dados")
     # Gráfico de dispersão simples
     fig, ax = plt.subplots()
-    # Mapeando os números para os nomes no gráfico também
+    
+    # 1. Plotando os vinhos do Dataset (Fundo)
     df_vis = df.copy()
     df_vis['Tipo de Vinho'] = df_vis['target'].map({0: 'Barolo', 1: 'Grignolino', 2: 'Barbera'})
+    sns.scatterplot(data=df_vis, x='alcohol', y='color_intensity', hue='Tipo de Vinho', palette='viridis', ax=ax, alpha=0.6)
     
-    sns.scatterplot(data=df_vis, x='alcohol', y='color_intensity', hue='Tipo de Vinho', palette='viridis', ax=ax)
-    plt.title("Relação: Álcool vs Intensidade da Cor")
+    # 2. Plotando o user input (O ponto vermelho dinâmico)
+    # Pegamos os valores dos sliders
+    user_alcohol = df_user['alcohol'][0]
+    user_color = df_user['color_intensity'][0]
+    
+    # Desenhamos um X vermelho grande
+    plt.scatter(x=user_alcohol, y=user_color, color='red', s=200, marker='X', label='Sua Simulação', zorder=10)
+    
+    plt.title("Onde seu vinho se encaixa? (Álcool vs Cor)")
+    plt.legend()
     st.pyplot(fig)
     
     st.markdown("---")
@@ -103,7 +113,7 @@ with col1:
     y_pred = clf.predict(X_test)
     acc = accuracy_score(y_test, y_pred)
     st.write(f"**Acurácia do Modelo:** {acc:.2%}")
-    st.info("A acurácia indica a porcentagem de vinhos que o modelo classificou corretamente no conjunto de teste.")
+    st.info("O ponto vermelho (X) mostra a posição do vinho que você configurou em relação aos grupos conhecidos.")
 
 with col2:
     st.subheader("🔍 Resultado da Predição")
