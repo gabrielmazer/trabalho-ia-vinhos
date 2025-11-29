@@ -113,7 +113,12 @@ with col1:
     y_pred = clf.predict(X_test)
     acc = accuracy_score(y_test, y_pred)
     st.write(f"**Acurácia do Modelo:** {acc:.2%}")
-    st.info("O ponto vermelho (X) mostra a posição do vinho que você configurou em relação aos grupos conhecidos.")
+    st.info("📌 O ponto vermelho (X) mostra os valores de Álcool e Cor.")
+    st.caption("""
+    Nota Importante: Se a classificação (texto) parecer diferente da posição visual (X), 
+    isso acontece porque o modelo de IA considera TODAS as 13 características químicas 
+    (como Magnésio, Flavanóides, etc.), enquanto o gráfico mostra apenas 2 dimensões.
+    """)
 
 with col2:
     st.subheader("🔍 Resultado da Predição")
