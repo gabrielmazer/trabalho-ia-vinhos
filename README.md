@@ -24,7 +24,7 @@ Demonstrar a aplicação prática de técnicas de IA para resolução de problem
 
 A aplicação está rodando em tempo real na nuvem. Clique no link abaixo para testar:
 
-### [👉 Acessar Classificador de Vinhos](https://trabalho-ia-vinhos-gmazer-mshoda-streamlit.app/)
+### [👉 Acessar Classificador de Vinhos](https://trabalho-ia-vinhos-gmazer-mshoda.streamlit.app/)
 
 ---
 
